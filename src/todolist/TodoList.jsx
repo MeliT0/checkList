@@ -37,7 +37,7 @@ export const TodoList = () => {
                 <div className="card-body">
                     <ul className="list-group">
                         {taskList.map(task =>
-                        <li className="list-group-item">
+                        <li className="list-group-item list-group-item-dark">
                             <div className="form-check">
                                 <input className="form-check-input me-1" type="checkbox" value=""  />
                                 <label className="form-check-label" htmlFor="flexCheckIndeterminate">
