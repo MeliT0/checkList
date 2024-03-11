@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {db} from '../firebase/config.js';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 export const TodoList = () => {
 
-    const [taskList, addNewTask] = useState(['prueba elemetno 1', 'prueba elemento 2']);
+    const [taskList, addNewTask] = useState([]);
     const [input, setInput] = useState('');
+
+    useEffect(() => {
+        onSnapshot(collection(db, 'taskList'), (snapshot) => {
+            addNewTask(snapshot.docs.map(doc => doc.data()))
+        })
+    }, [input]);
 
     const updateTaskValue = (e) => {
         const taskValue = e.target.value;
@@ -24,14 +32,16 @@ export const TodoList = () => {
             <h1>Tareas Pendientes</h1>
             <div className="card">
                 <div className="card-body">
-                    <ul>
+                    <ul className="list-group">
                         {taskList.map(task =>
+                        <li className="list-group-item">
                             <div className="form-check">
-                                <input className="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate" />
-                                <label className="form-check-label" for="flexCheckIndeterminate">
-                                    {task}
+                                <input className="form-check-input me-1" type="checkbox" value=""  />
+                                <label className="form-check-label" htmlFor="flexCheckIndeterminate">
+                                {task.value}
                                 </label>
                             </div>
+                            </li>
                         )}
                     </ul>
                 </div>
