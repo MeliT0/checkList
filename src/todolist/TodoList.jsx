@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react";
 import {db} from '../firebase/config.js';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, serverTimestamp, addDoc } from 'firebase/firestore';
 
 export const TodoList = () => {
 
@@ -21,7 +21,10 @@ export const TodoList = () => {
 
     const createNewTask = (e) => {
         e.preventDefault();
-        addNewTask([...taskList, input]);
+        addDoc(collection(db, "taskList"), {
+            value: input,
+            timestamp: serverTimestamp(),
+          });
         console.log("creando nueva tarea..." + input);
         setInput('');
         console.log("lista de tareas: " + taskList);
